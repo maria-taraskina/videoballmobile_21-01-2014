@@ -1,0 +1,144 @@
+					img{
+  -webkit-touch-callout: none !important; 
+}
+div.controls #up {
+    -webkit-touch-callout: none !important; 
+}
+					
+					#main_page .ui-header,#main_page .ui-footer{font-size:10px;}
+					#left-panel,#right-panel{width:100%;}
+					.right-btn { float: right;  }
+					.controls{width:230px;height:230px;margin:auto;position:relative;/*border:1px solid red;*/}
+					.controls .btns{						position:absolute;						border:none;					}
+				
+					.controls .a:hover{						border:1px solid red;						background:white;
+					}
+				.ui-btn-inner{
+						bodrer:3px solid green !important;
+					}
+					.controls #volume_up{left:30px;background:url(images/controls/vol_up.png) no-repeat; width:167px; height:86px;}
+					.controls #next_channel{left:145px;top:38px;background:url(images/controls/ch_next.png) no-repeat; width:83px; height:155px;}
+					.controls #prev_channel{left:0;top:0;}
+					.controls #volume_down{left:30px;top:144px;background:url(images/controls/vol_down.png) no-repeat; width:167px; height:86px;}
+					.controls #stop{left:0;top:0;}							.clear{clear:both;}
+					
+					
+					
+					.head1{
+					text-align:right;
+					color:#E85E35;
+					background-color:#ccc;
+					font-size:11px;
+					font-weight:bold;
+					text-shadow:none;
+					padding:5px;
+					}
+					a#players-button,a#user-nc-button{width:80%;margin: 10px auto;}
+					select#players,select#user-nc{width:100%;}
+					
+					
+					a.a-view{padding:0 10px;font-size:12px;}
+					a.a-view.active,a.a-view:hover{text-decoration:none;color:#000 !important;}
+					
+					div#list-wrap{display:none;}
+					
+					div#programma-groups .ch-group h3 .ui-btn-text{
+					font-size:13px;
+					}
+					.ch-group ul{padding-left:0;	}
+					.ch-group ul li{list-style:none;}					
+					 .ch-group ul li a{
+						text-decoration:none;
+						font-size:12px;
+						color:#000;
+						font-weight:normal;	
+						padding-right:30px;
+					}
+			
+					ul li a .ch-img{
+						float:left;
+						padding-right:15px;
+					}
+					div#list-wrap ul li a, div#programma-groups .ch-group ul li a{
+						font-weight:normal;		
+					}
+					div.ch-name{
+					font-size:14px;
+						white-space:normal; 
+						width:74%; 
+						display:block;
+						padding-left:70px;
+					
+					}
+					span.ch-title{
+						font-size:12px;
+						/*padding-right:40px;*/
+						white-space:normal; 
+						width:74%; 
+						display:block;
+						padding-left:70px;
+						}
+					/*span.ch-title:after  { content: " ..."  }*/
+					span.duration{
+						font-size:9px;
+						white-space:normal; 
+						width:70%; 
+						display:block;
+						padding-left:70px;
+					}
+					div.loading{
+						height: 46px;
+						opacity: 0.18;
+						filter:progid:DXImageTransform.Microsoft.Alpha(opacity=18); 
+						-moz-opacity: 0.18; 
+						-khtml-opacity: 0.18; 
+						margin: 0 auto;
+						width: 46px;					
+						border: 0 none;
+						display: block;
+						z-index: 9999999;
+					}
+					div.loading span {
+						background: url("images/ajax-loader.gif") repeat scroll 0 0;
+						border-radius: 36px 36px 36px 36px;
+						display: block;
+						height: 44px;						
+						padding: 1px;
+						width: 44px;						
+					}
+
+
+					#userMonitor{
+					padding-top:16px;
+					font-size:10px;
+					float:right;
+					width:150px;
+					}
+					
+					
+					.clear{
+					clear:both;
+					}
+					
+					#programma-groups{
+					padding-top:10px;
+					
+					}
+					#list-wrap{
+					padding-top:30px;
+					}
+.ui-selectmenu {
+	padding:0;
+	min-width:250px;
+}
+
+.ui-selectmenu .ui-btn-text a{
+	font-size:12px;
+}
+div #volume-wrapper{
+float:left;
+width:80%;
+}
+a#mute{
+	float:right;
+}

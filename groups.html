@@ -1,0 +1,24 @@
+<?php
+require_once "iptv.functions.php";
+
+
+$itype = $_GET['t'];
+
+if ( $itype = 'ch' ) {
+    $sql  = "SELECT `g`.`id_grp`, `g`.`name` ";
+    $sql .= "FROM `video_groups` as `g` ";
+    $sql .= "ORDER BY `g`.`ord` ";
+}
+
+
+if ((int)$_GET['sql'] == 1) { print $sql; exit; }
+
+
+$res = $GLOBALS['db']->data($sql);
+$channels['channels'] = $res;
+
+print json_encode($channels);
+
+
+
+?>

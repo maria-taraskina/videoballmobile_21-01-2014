@@ -1,0 +1,38 @@
+<?php
+require_once "globals.var.php";
+require_once "iptv.functions.php";
+
+
+
+if ( isset( $_GET ) ) {
+
+
+ 	if ( $_GET['cmd'] == 'play' ) {
+ 	 	print dvbs_play( (int)$_GET['channel'] );
+	}	
+
+	if ( $_GET['cmd'] == 'pause' ) {
+//	 	dvbs_pause();
+	}
+
+	if ( $_GET['cmd'] == 'stop') {
+		print dvbs_stop();
+	}
+	
+	if ( $_GET['cmd'] == 'status' ) {
+		print dvbs_status_has_lock( );
+	}
+	
+	if ( $_GET['cmd'] == 'kill_all' ) {
+		kill_all_dvbs();
+	}
+	
+}
+
+if ( isset( $GLOBALS['db'] ) ) {
+	$GLOBALS['db']->free();
+	unset( $GLOBALS['db'] );
+}
+
+
+?>

@@ -1,0 +1,163 @@
+<?php
+
+require_once "globals.var.php";
+require_once "iptv.functions.php";
+
+// Проигрывание потока 
+// Проигрывание файла
+// Опрос медеаплеера
+
+define( "VOLUME_STEP", 5 );
+define( "UDPROXY", "http://192.168.1.217:3123/udp/" );
+$DUNE_URL = "http://" . $GLOBALS['players'][$GLOBALS['PLAYER']]['ipaddr'] . "/cgi-bin/do?cmd=";
+
+function DUNE_URL_set( $p ) {
+	$DUNE_URL = "http://" . $GLOBALS['players'][$p]['ipaddr'] . "/cgi-bin/do?cmd=";
+	$GLOBALS['PLAYER'] = $p;
+} 	
+
+function DUNE_request( $url ) {
+	$c = curl_init(); 
+
+	$options = array(
+		CURLOPT_URL => $url,
+ 	 	CURLOPT_RETURNTRANSFER => True
+ 	);
+ 	
+	curl_setopt_array($c, $options);
+ 	$r = curl_exec( $c );
+ 	if ( $r === False ) {
+ 		print curl_error( $c );
+ 	}
+ 	curl_close( $c );
+
+	return $r;
+}
+
+// Преобразовываем ответ плеера в формат JSON
+function DUNE_response( $x ) {
+
+	$xml = new DOMDocument();
+	$xml->loadXML( $x );
+	
+	$r = array();
+	$params = $xml->getElementsByTagName( 'param' );
+	foreach( $params as $param ) {
+ 		$r[ $param->getAttribute('name') ] = $param->getAttribute('value');
+ 	}
+ 	
+ 	return json_encode( $r );
+}
+// Переводим плеер в режим тишины
+function DUNE_BLANK_SCREEN() {
+	$url = $GLOBALS['DUNE_URL'] . "black_screen";
+	return DUNE_request( $url );
+}
+
+if ( isset( $_GET ) ) {
+	// 
+ 	if ( ($_GET['cmd'] == 'play') and ( $_GET['url'] != "" ) ) {
+ 	 	DUNE_BLANK_SCREEN();
+ 	 	
+ 	 	$media_url = $_GET['url'];
+
+  		$url = $GLOBALS['DUNE_URL'] . "start_file_playback&media_url=" . $media_url;
+ 		print DUNE_response(  DUNE_request( $url ) );
+	}
+
+	// Включаем определенный плеер и проигрываем определенный адрес
+	if ($_GET['cmd'] == 'play' & (int)$_GET['u'] > -1  & (int)$_GET['tv'] > -1 ) {
+		// Установили строку подключения к плееру
+		DUNE_URL_set( (int)$_GET['tv'] );
+		DUNE_BLANK_SCREEN();
+
+		// Состояние плеера писать в файл надо отменить!!!!
+                $streams = iptv_options_read();
+                
+                
+                if ( $GLOBALS['players'][(int)$_GET['tv']]['udpxy'] == 1 ) {
+		    $url = $GLOBALS['DUNE_URL'] . "start_file_playback&media_url=" . UDPROXY . $GLOBALS['ipaddr'][(int)$_GET['u']];
+		} else {
+		    $url = $GLOBALS['DUNE_URL'] . "start_file_playback&media_url=" . "udp://@" . $GLOBALS['ipaddr'][(int)$_GET['u']];
+		}
+		
+		$r =  json_decode( DUNE_response( DUNE_request( $url ) ), true );
+ 		$res = array_merge_recursive($r, $GLOBALS['players'][(int)$_GET['tv']]);
+				
+				
+ 		$streams['PLAYER'][(int)$_GET['tv']] = $res;
+                iptv_options_save( $streams );
+
+         	print json_encode($streams);
+	}
+	// Выключает плеер 
+	if ( $_GET['cmd'] == 'stop' ) {
+                $streams = iptv_options_read();
+	 	print DUNE_response ( DUNE_BLANK_SCREEN() );
+		unset( $streams['PLAYER'][(int)$_GET['tv']] );
+                iptv_options_save( $streams );
+	}	
+
+
+	// Запрос ссотояния
+	if ( $_GET['cmd'] == 'status' ) {
+	 	$url = $GLOBALS['DUNE_URL'] . "status";
+ 	 	print DUNE_response(  DUNE_request( $url ) );
+	}
+
+	// Выключает плеер
+	if ( $_GET['cmd'] == 'off') {
+		$url = $GLOBALS['DUNE_URL'] . "standby";
+		print DUNE_response(  DUNE_request( $url ) );
+	}
+	
+	// Увеличивает громкость
+	if ( $_GET['cmd'] == 'volume_up' ) {
+		$url = $GLOBALS['DUNE_URL'] . "status";
+		$r = json_decode( DUNE_response( DUNE_request( $url ) ), true );
+		
+		if ( isset($r['playback_volume']) ) {
+			$url = $GLOBALS['DUNE_URL'] . "set_playback_state&volume=" . ($r['playback_volume'] + VOLUME_STEP);
+			print DUNE_response(  DUNE_request( $url ) );
+		}
+	}
+	
+	// Уменьшает громкость
+	if ( $_GET['cmd'] == 'volume_down' ) {
+		$url = $GLOBALS['DUNE_URL'] . "status";
+		$r = json_decode( DUNE_response( DUNE_request( $url ) ), true );
+
+		if ( isset($r['playback_volume']) ) {
+			$url = $GLOBALS['DUNE_URL'] . "set_playback_state&volume=" . ($r['playback_volume'] - VOLUME_STEP);
+			print DUNE_response(  DUNE_request( $url ) );
+		}
+	}
+	
+	// Установка громкости
+	if ( $_GET['cmd'] == 'set_volume' ) {
+		$url = $GLOBALS['DUNE_URL'] . "set_playback_state&volume=" . (int)$_GET['value'];
+		print DUNE_response(  DUNE_request( $url ) );
+	}
+	
+	if ( $_GET['cmd'] == 'pause' ) {
+		$url = $GLOBALS['DUNE_URL'] . "status";
+		$r = json_decode( DUNE_response( DUNE_request( $url ) ), true );
+	
+		$url = $GLOBALS['DUNE_URL'] . "set_playback_state&speed=" . ( (int)$r['playback_speed'] == 0 ? "256" : "0" );
+		print DUNE_response( DUNE_request( $url ) );
+	}
+	
+	if ( $_GET['cmd'] == 'mute' ) {
+		$url = $GLOBALS['DUNE_URL'] . "status";
+		$r = json_decode( DUNE_response( DUNE_request( $url ) ), true );
+	
+		if ( isset($r['playback_mute']) ) {
+			$url = $GLOBALS['DUNE_URL'] . "set_playback_state&mute=" . ( (int)$r['playback_mute'] == 0 ? "1" : "0" );
+			print DUNE_response( DUNE_request( $url ) );
+		}
+	}
+	
+}
+
+
+?>

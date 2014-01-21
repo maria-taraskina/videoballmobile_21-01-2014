@@ -1,0 +1,66 @@
+/* reset buttons */
+a[data-role="button"][data-theme="reset"] {
+    border-radius: 0px; -webkit-border-radius: 0px; -moz-border-radius: 0px;
+    box-shadow: none !important; -webkit-box-shadow: none !important; -moz-box-shadow: none !important;
+    text-decoration: none;
+	}
+	a[data-role="button"][data-theme="reset"] .ui-btn-inner {
+        color: white;
+        overflow: visible;
+    	text-shadow: 0 -1px 0 #000;
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+        border: 1px solid #333;
+        border-radius: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px;
+        background: #333;
+        box-shadow: 0 1px 0 rgba(255,255,255, 0.25), inset 0 1px 1px rgba(0,0,0, 0.2);
+        	-webkit-box-shadow: 0 1px 0 rgba(255,255,255, 0.25), inset 0 1px 1px rgba(0,0,0, 0.2);
+        	-moz-box-shadow: 0 1px 0 rgba(255,255,255, 0.25), inset 0 1px 1px rgba(0,0,0, 0.2);
+		}
+
+	/* remove button background */
+	a[data-role="button"][data-theme="reset"].app-theme-none .ui-btn-inner,
+	area[data-role="button"][data-theme="reset"].app-theme-none .ui-btn-inner,
+	.app-theme-none .ui-btn-inner 	{
+		display:none !important;
+	    color: #222;
+	    background: none !important;
+	    border: none !important;
+	    box-shadow: none !important;
+	   	text-shadow: none !important;
+		}
+
+		/* remove icon background */
+		a[data-role="button"][data-theme="reset"].app-theme-none .ui-btn-inner .ui-icon {
+		    background-color: rgba(0, 0, 0, 0);
+		    border: none;
+		    box-shadow: none;
+			}
+
+	/* hide button text
+	 * NOTE: data-iconpos="notext" does not affect the navbar. It's overriden by data-iconpos="top"
+	 */
+	a[data-theme="reset"][data-role="button"].notext .ui-btn-text {
+		display: none;
+		}
+
+/* when buttons are inside a controlgroup */
+.ui-controlgroup a[data-role="button"][data-theme="reset"] {
+	border-right: none;
+	margin-left: 2px;
+	}
+.ui-controlgroup a[data-role="button"][data-theme="reset"] .ui-btn-inner {
+	}
+	/* adjust inner radius and left padding */
+	.ui-controlgroup a[data-role="button"][data-theme="reset"] .ui-btn-inner {
+	    border-radius: 0px; -webkit-border-radius: 0px; -moz-border-radius: 0px;
+	    padding-left: 35px !important;
+		border-right: none !important;
+		}
+	.ui-controlgroup a[data-role="button"][data-theme="reset"]:first-child .ui-btn-inner {
+		border-radius: 5px 0px 0px 5px; -webkit-border-radius: 5px 0px 0px 5px; -moz-border-radius: 5px 0px 0px 5px;
+		}
+	.ui-controlgroup a[data-role="button"][data-theme="reset"]:last-child .ui-btn-inner {
+		border-radius: 0px 5px 5px 0px; -webkit-border-radius: 0px 5px 5px 0px; -moz-border-radius: 0px 5px 5px 0px;
+       	border-right: 1px solid #333 !important;
+		}

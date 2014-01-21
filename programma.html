@@ -1,0 +1,83 @@
+<?php
+require_once "iptv.functions.php";
+
+// Контроль входных данных ОБЯЗАТЕЛЬНО!!!
+$id0 = $_GET['d0'];  	   // Диапазон 
+$id1 = $_GET['d1'];
+$ic = $_GET['c'];          // Каналы выбранные
+$in = (int)$_GET['n'];     // Добавление в список каналов без программки  
+$isex = (int)$_GET['sex']; // Показывать каналы для взрослых, по умолчание не показывать
+$ip = (int)$_GET['p'];     // Номер страницы
+$inop = (int)$_GET['nop'];
+if ( !isset($_GET['nop']) ) { 
+    $inop = 10;                // Кол-во позиций на странице
+}
+$igrp = (int)$_GET['g'];   // Группа каналов
+
+
+$dt = new DateTime();
+$datetime = $dt->format("Y-m-d H:i:s");
+
+
+// Добавляется ограничение по датам и времени
+if ( ( $id0 <> "" ) and ($id1 <> "" ) ) {
+    $sdate = "`p`.`start` >= '" . $id0 . "' and `p`.`stop` <= '" . $id1 . "' ";
+} else {
+    $sdate = "`p`.`start` <= '" . $datetime  . "' and `p`.`stop` >= '" . $datetime  . "' ";
+}
+
+// Добавляется ограничение по каналам
+if ( $ic <> "" ) {
+    $sc = " and `p`.`channel` IN (" . $ic . ")"; 
+}
+
+// Ограничение по взрослым каналам
+if ( $isex == 1 ) {
+    $ssex = "";
+} else {
+    $ssex = "AND `g`.`id_grp` NOT IN( 1 ) ";
+}
+
+// Ограничение по группе каналов
+if ( $igrp > 0 ) {
+    $sgrp = "AND `g`.`id_grp` = " . $igrp . " ";
+} else {
+    $sgrp = "";
+}
+
+
+
+$sql = "SELECT `s`.`name`, `p`.`channel` as `id_channel`, `g`.`name` as `category`, `p`.`title`, `p`.`desc`, `p`.`start`, `p`.`stop` ";
+$sql.= "FROM `video_programma` as `p` ";
+$sql.= "JOIN `video_source` as `s` ON (`p`.`channel` = `s`.`id_channel`) ";
+$sql.= "JOIN `video_programma_groups` as `vpg` ON (`p`.`category` = `vpg`.`category`) "; 
+$sql.= "JOIN `video_groups`as `g` ON (`vpg`.`id_grp` = `g`.`id_grp`" . $ssex . $sgrp  . ") ";
+$sql.= "WHERE " . $sdate .  $sc .  " ";
+if ( $in == 1 ) {
+    $sql.= "UNION ";
+    $sql.= "SELECT `v`.`name`, `v`.`id_channel`, `g`.`name` AS `category`, '' AS `title`, '' AS `desc`, '' AS `start`, '' AS `stop` ";
+    $sql.= "FROM `video_source` as `v` ";
+    $sql.= "JOIN `video_source_group` as `vsg` ON (`v`.`id_video` = `vsg`.`id_source`) ";
+    $sql.= "JOIN `video_groups`as `g` ON (`vsg`.`id_grp` = `g`.`id_grp` " . $ssex . $sgrp . ") ";
+    $sql.= "WHERE `v`.`active` > 0 AND ( `v`.`id_channel` > 999000 OR `v`.`id_channel` = 0) ";
+}
+$sql.= "ORDER BY `category`, `start` ";
+
+
+if ( $ip > 0 ) {
+    $sp = $ip * $inop - $inop;
+
+    $sql .= "LIMIT " . $sp . ", " . $inop;
+}
+
+
+if ((int)$_GET['sql'] == 1) { print $sql; }
+
+$res = $GLOBALS['db']->data($sql);
+$channels['programma'] = $res;
+
+if ((int)$_GET['sql'] != 1) { print json_encode($channels); }
+
+
+
+?>

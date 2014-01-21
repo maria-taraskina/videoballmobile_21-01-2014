@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html><head>
+	<meta charset="utf-8">
+	<title>Videoballmobile - version 0.0</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="css/jquery.mobile-1.3.1.min.css" />
+	<link rel="stylesheet" href="css/button-reset.css" />
+	<link rel="stylesheet" href="css/main.css" />
+	<script src="js/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="js/jquery.maphilight.js"></script>
+	<script type="text/javascript" src="js/localstorage.js"></script>
+	
+	<script src="js/jquery.mobile-1.3.1.min.js"></script> 
+	<script src="js/videoball.js"></script>
+	<script src="js/programma.js"></script>
+	
+</head>
+<body>
+<div data-role="page" id="main_page" class="main_page" data-theme="b">
+<div data-role="header" data-mini="true" d>Главная страница</div> 
+<div data-role="content"> 
+
+
+							<div class="head1">Пользователь</div>
+							<select name="select-user" id="user-nc" data-native-menu="false" data-mini="true" ui-body-d = "d" data-inline="false"  data-theme="d" data-corners="false">
+								<option data-placeholder="true">Выберите пользователя</option>
+								<option value="0">Виталий</option>
+								<option value="1">Любовь</option>
+								<option value="2">Гости</option>
+								<option value="3">Служебный</option>
+							</select>
+							<div class="head1">Плеер</div>
+							<select name="select-player" id="players" data-native-menu="false"  multiple="multiple" data-mini="true" data-inline="false" ui-body-d = "d" data-theme="d" data-corners="false"><option data-placeholder="true">Выберите плееры</option></select>
+							<div id="players2"></div>
+							<div class="head1">Статус</div>
+							<div id="userMonitor"></div>
+							<div id="playerMonitor"></div>
+							<div class="clear"></div>
+							<br/><br/>
+								<div id="volume-wrapper"><input type="range" name="slider-fill" id="slider-volume" value="50" min="0" max="100" data-show-value="true" data-highlight="true" data-mini="true"  data-theme="d" /></div><a href="#" id="mute" data-role="button" data-inline="true" data-mini="true" data-icon="delete" data-iconpos="right">mute</a>	
+	<div class="clear"></div><br/>
+
+						<div class="controls">	
+							<img src="images/controls/controls-map.png" usemap="#controls-map" class="map" border="0" width="230" height="230" alt="" />
+						<map id="controls-map" name="controls-map">
+								<area id="up" data-role="button" data-theme="reset" class="area app-theme-none btns notext" shape="poly" coords="31,36,45,23,60,14,78,6,93,3,112,1,134,3,155,8,172,16,185,24,197,35,184,46,171,58,157,71,144,83,130,76,116,72,105,73,92,78,84,84,77,77,66,66,55,56,45,47" href="#up" alt="" title=""   />
+								<area id="next" data-role="button" data-theme="reset" class="area app-theme-none btns notext" shape="poly" coords="147,87,155,80,164,72,174,63,184,53,194,45,200,40,211,53,220,70,225,89,229,109,228,128,224,148,217,165,209,178,200,191,191,182,179,172,169,163,160,155,152,148,147,143,151,135,154,127,156,117,155,108,152,97" href="#next" alt="" title=""   />
+										
+								<area id="down"  data-role="button" data-theme="reset" class="area app-theme-none btns notext" shape="poly" coords="84,146,93,152,103,156,115,157,127,156,136,152,143,147,153,156,166,165,176,176,188,186,195,193,185,204,172,213,157,220,140,225,119,228,98,228,84,224,69,218,55,212,44,204,32,194,41,185,51,176,61,168,70,158,77,150" href="#down" alt="" title=""   />
+								<area id="prev" data-role="button" data-theme="reset" class="area app-theme-none btns notext" shape="poly" coords="28,39,36,46,45,54,54,63,64,72,74,81,81,87,74,99,71,110,72,123,76,135,81,141,72,150,62,160,51,170,40,178,29,190,23,183,16,173,10,162,6,153,3,142,0,130,0,116,1,101,2,91,4,81,9,70,13,59,20,48" href="#prev" alt="" title=""   />
+								<area id="stop" data-role="button" data-theme="reset" class="area app-theme-none btns notext" shape="rect" coords="89,92,139,142" href="#stop" alt="stop" title="stop"    />								
+								
+								</map> 
+								</div><!--controls-->
+								
+					<!--a href="#up" class="app-theme-none btns" data-theme="reset" id="volume_up" data-role="button" data-mini="true" data-inline="true"></a>
+					<a href="#prev" class="app-theme-none btns" data-theme="reset" id="prev_channel" data-role="button" data-mini="true" data-inline="true"></a>
+					<a href="#stop" class="app-theme-none btns" data-theme="reset" id="stop" data-role="button" data-mini="true" data-inline="true"></a>
+					<a href="#next" class="app-theme-none btns" data-theme="reset" id="next_channel" data-role="button" data-mini="true" data-inline="true"></a>
+					<a href="#down" class="app-theme-none btns" data-theme="reset" id="volume_down" data-role="button" data-mini="true" data-inline="true"></a-->							
+					
+				
+					<!--a href="#" id="stop" data-role="button" data-mini="true" data-icon="delete" data-iconpos="right">Прекращение вещания текущего пользователя</a-->	
+<br/>					
+			<a href="#" id="a-group" class="a-view active">По группам</a> <a href="#" id="a-list" class="a-view">Полный список</a><br/>
+			<div data-role="collapsible-set" id="programma-groups" data-theme="d"><div class="loading"><span></span></div></div>	
+			
+			<div id="list-wrap">
+				<ul data-role="listview" data-filter="true" data-inset="true"  data-theme="d"></ul>			
+				<div class="loading"><span ></span></div>
+			</div>
+					
+					
+					<!--a href="#" id="kill_all" data-role="button" data-mini="true" data-icon="delete" data-iconpos="right">Убить всё</a-->    
+					
+				</div>  
+				
+				<div data-role="footer">&copy; Videoball 2013</div>
+		</div>	
+					
+					
+
+							
+						
+			
+			
+			
+</body>
+<script>
+checkStatus();
+restoreData();
+load_players();
+
+loadProgrammByCategory();
+loadFullProgrammList('?n=1&p=1'); 
+
+$(function() { $('.map').maphilight(); });
+
+</script>
+</html>

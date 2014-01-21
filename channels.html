@@ -1,0 +1,30 @@
+<?php
+require_once "iptv.functions.php";
+
+
+$u = (int)$_GET['u'];
+$n = (int)$_GET['n'];
+$p = (int)$_GET['p'];
+
+
+$sql  = "SELECT `v`.`id_video`, `v`.`id_channel`, `v`.`name`, `g`.`name` as `group` ";
+$sql .= "FROM `video_source` as `v` ";
+$sql .= "LEFT JOIN `video_source_group` as `vsg` ON (`v`.`id_video` = `vsg`.`id_source`) ";
+$sql .= "LEFT JOIN `video_groups` as `g` ON (`vsg`.`id_grp` = `g`.`id_grp`) ";
+$sql .= "WHERE `v`.`id_type` = 1 and `v`.`active` > 0 ";
+$sql .= "ORDER BY `g`.`ord`, `v`.`ord` ";
+
+// Пейджер 
+if ( ($u > -1) & ($n > 0) & ($p > 0) ) {
+    $sql .= " LIMIT " . $p * $n . ", " . $n;
+}
+
+
+$res = $GLOBALS['db']->data($sql);
+$channels['channels'] = $res;
+
+print json_encode($channels);
+
+
+
+?>
