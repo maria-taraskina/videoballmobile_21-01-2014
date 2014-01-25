@@ -11,7 +11,7 @@ var nextChannel = null;
 var programListsReady = false;
 
 function loadProgrammByCategory(){
-		$.getJSON( "/videoballmobile/groups.html?t=ch",
+		$.getJSON( "groups.html?t=ch",
 			function(data) {	
 		
 			$("div#programma-groups .loading").hide();
@@ -67,7 +67,7 @@ function loadFullProgrammList(parameters){
 var s1="";
 		programListsReady=false;
 
-		$.getJSON( "/videoballmobile/programma.html" + parameters,
+		$.getJSON( "programma.html" + parameters,
 			function(data) {
 			
 			$("div#list-wrap .loading").hide();
