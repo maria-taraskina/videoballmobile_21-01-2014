@@ -10,8 +10,10 @@ var nextChannel = null;
 
 var programListsReady = false;
 
+var host = "http://kizyavka.asuscomm.com:8081/videoballmobile/";
+
 function loadProgrammByCategory(){
-		$.getJSON( "groups.html?t=ch",
+		$.getJSON( host+"groups.html?t=ch",
 			function(data) {	
 		
 			$("div#programma-groups .loading").hide();
@@ -67,7 +69,7 @@ function loadFullProgrammList(parameters){
 var s1="";
 		programListsReady=false;
 
-		$.getJSON( "programma.html" + parameters,
+		$.getJSON(host+"programma.html" + parameters,
 			function(data) {
 			
 			$("div#list-wrap .loading").hide();

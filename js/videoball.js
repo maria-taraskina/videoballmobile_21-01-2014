@@ -4,10 +4,12 @@ var Volume;// = 0;   // Установленная громкость на пл�
 var ChannelRunning = 0;
 
 var restore=false;
+
+var host = "http://kizyavka.asuscomm.com:8081/videoballmobile/";
        
 function checkStatus(){
 	$.ajax({
-						url: "dvbs.html?cmd=status" ,
+						url: host+"dvbs.html?cmd=status" ,
 						dataType: "json",
 						success: function (data) {
 						console.log("DVBS status data: ", data);
@@ -23,7 +25,7 @@ function load_players() {
 if(currentPlayers == undefined)currentPlayers =  new Array();
 	$(function() {
 		// Загрузка медиаплееров
-		$.getJSON( "players.html", 
+		$.getJSON( host+"players.html", 
 			function(data) {
 			    s = '';				
  				$.each(data.players, function(i, item) {
@@ -68,7 +70,7 @@ if(currentPlayers == undefined)currentPlayers =  new Array();
 		url = "run/iptv-" + User + ".json";
 
 		// Загрузка данных по пользователю
- 		$.getJSON( url,
+ 		$.getJSON( host+url,
 			function(data) {
 			    // Если есть вещание показываем кто смотрит
 			    /*if (data.DVBtoIP.cmd == 'play') {
@@ -91,7 +93,7 @@ saveData();
 	
 	function turnOffPlayer(v){
 	$.ajax({
-						url: "dune.html?cmd=off&tv=" + v ,
+						url: host+"dune.html?cmd=off&tv=" + v ,
 						dataType: "json",
 						success: function (data) {
 								$("#playerMonitor").html( "<b>Статус:</b> " + data.player_state + "<br>" );
@@ -118,7 +120,7 @@ saveData();
 	
 	function turnOnPlayer(v){
 	$.ajax({
-						url: "dune.html?cmd=play&u=" + User + "&tv=" + v ,
+						url: host+"dune.html?cmd=play&u=" + User + "&tv=" + v ,
 						dataType: "json",
 						success: function (data) {
 						
@@ -262,7 +264,7 @@ $('#user-nc').on('change', function () {
 function volumeUp(){
 	for (c in currentPlayers){	
 				$.ajax({
-					url: "dune.html?cmd=volume_up&tv=" + currentPlayers[c] ,
+					url: host+"dune.html?cmd=volume_up&tv=" + currentPlayers[c] ,
 					dataType: "json",
 					success: function (data) {									
 					}
@@ -283,7 +285,7 @@ $( document ).on( "vmousedown", "div.controls #down", function() {
 function volumeDown(){
 	for (c in currentPlayers){	
 				$.ajax({
-					url: "dune.html?cmd=volume_down&tv=" + currentPlayers[c] ,
+					url: host+"dune.html?cmd=volume_down&tv=" + currentPlayers[c] ,
 					dataType: "json",
 					success: function (data) {									
 					}
@@ -316,7 +318,7 @@ $("a#mute").click(function(){
 	
 	for (c in currentPlayers){	
 	$.ajax({
-			url: "dune.html?cmd=mute&tv=" + currentPlayers[c] ,
+			url: host+"dune.html?cmd=mute&tv=" + currentPlayers[c] ,
 			dataType: "json",
 			success: function (data) {									
 			}
